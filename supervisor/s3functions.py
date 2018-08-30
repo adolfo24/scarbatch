@@ -21,7 +21,7 @@ class S3(object):
             raise ce 
 
 
-if __name__ == "__main__":    
+if __name__ == "__main__":
     S3().download_file(os.environ['BUCKET'],os.environ['FILE_NAME'])
     if (os.environ['TYPE']=="script"):
         os.system('chmod +x /data/'+os.environ['FILE_NAME'])
