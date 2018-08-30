@@ -11,7 +11,7 @@ class S3(object):
             )
     def download_file(self,bucket,namefile):
         try:
-            self.client.download_file(bucket, namefile,"/data/"+namefile)
+            self.client.download_file(bucket, namefile,os.environ['SCAR_INPUT_DIR']+"/"+namefile)
             return namefile
         except ClientError as ce:
             error_msg = "Error register job definition."
@@ -20,8 +20,11 @@ class S3(object):
 
 
 if __name__ == "__main__":
-    S3().download_file(os.environ['BUCKET'],os.environ['FILE_NAME'])
-    if (os.environ['TYPE']=="script"):
-        os.system('chmod +x /data/'+os.environ['FILE_NAME'])
+    if not os.path.exists(os.environ['SCAR_INPUT_DIR']):
+        os.makedirs(os.environ['SCAR_INPUT_DIR'])
+    with open(os.path.join(os.environ['SCAR_INPUT_DIR'],"script.sh"), "w") as file1:
+        file1.write(os.environ['SCRIPT'])
+        file1.close()
+    os.system('chmod +x '+os.environ['SCAR_INPUT_DIR']+"/script.sh")
 
 
