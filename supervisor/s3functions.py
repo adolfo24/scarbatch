@@ -7,9 +7,7 @@ class S3(object):
 
     def __init__(self):
         self.client = boto3.client(
-                's3',   
-                aws_access_key_id=os.environ['KEY_ID'],
-                aws_secret_access_key=os.environ['SECRET_KEY']
+                's3',
             )
     def download_file(self,bucket,namefile):
         try:
