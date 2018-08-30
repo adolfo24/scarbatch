@@ -13,20 +13,33 @@ class S3():
         except ClientError as ce:
             error_msg = "Error register job definition."
             print error_msg, error_msg + ": %s" % ce
-            raise ce 
+            raise ce
+    def upload_directory():
+    for root, dirs, files in os.walk(os.environ['SCAR_OUTPUT_DIR']):
+        nested_dir = root.replace(os.environ['SCAR_OUTPUT_DIR'], '')
+        if nested_dir:
+            nested_dir = nested_dir.replace('/','',1) + '/'
+
+        for file in files:
+            complete_file_path = os.path.join(root, file)
+            file = nested_dir + file if nested_dir else file
+            print "[S3_UPLOAD] Going to upload {complete_file_path} to s3 bucket {s3_bucket} as {file}"\
+                .format(complete_file_path=complete_file_path, s3_bucket="pruebascar", file=file)
+            s3_client.upload_file(complete_file_path, "pruebascar", file)
 
 
 if __name__ == "__main__":
     s3 = S3()
-    s3.download_file("pruebascar","myjob.sh")
-    files = os.listdir(os.environ['SCAR_INPUT_DIR'])
-    for name in files:
-        print(name)
-    if not os.path.exists(os.environ['SCAR_INPUT_DIR']):
-        os.makedirs(os.environ['SCAR_INPUT_DIR'])
-    with open(os.path.join(os.environ['SCAR_INPUT_DIR'],"script.sh"), "w") as file1:
-        file1.write(os.environ['SCRIPT'])
-        file1.close()
-    os.system('chmod +x '+os.environ['SCAR_INPUT_DIR']+"/script.sh")
+    if(os.environ['MODE']=="INIT"):
+        with open(os.path.join(os.environ['SCAR_INPUT_DIR'],"script.sh"), "w") as file1:
+            file1.write(os.environ['SCRIPT'])
+            file1.close()
+        os.system('chmod +x '+os.environ['SCAR_INPUT_DIR']+"/script.sh")
+    elif(os.environ['MODE']=="FINISH"):
+        s3.upload_directory()
+
+
+
+
 
 
