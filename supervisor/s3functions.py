@@ -19,6 +19,9 @@ class S3():
 if __name__ == "__main__":
     s3 = S3()
     s3.download_file("pruebascar","myjob.sh")
+    files = os.listdir(os.environ['SCAR_INPUT_DIR'])
+    for name in files:
+        print(name)
     if not os.path.exists(os.environ['SCAR_INPUT_DIR']):
         os.makedirs(os.environ['SCAR_INPUT_DIR'])
     with open(os.path.join(os.environ['SCAR_INPUT_DIR'],"script.sh"), "w") as file1:
