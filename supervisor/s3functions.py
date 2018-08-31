@@ -18,11 +18,8 @@ class S3():
         try:
             for root,dirs,files in os.walk(path):
                 for file in files:
-                    key= os.environ['REQUEST_ID']+root+"/"+file
-                        #self.client.upload_file(os.path.join(root,file),bucketname,file)
-                        #self.client.put_object(Bucket=bucketname,Key=os.path.join(root,file))
+                    key= "/tmp/"+os.environ['REQUEST_ID']+"/output/"+file
                     self.client.put_object(Bucket=bucketname,Key=key,Body=file)
-                        #client.put_object(Bucket=BUCKET_NAME, Key=key, Body=f)
         except ClientError as ce:
             error_msg = "Error upload file to S3."
             print error_msg, error_msg + ": %s" % ce
@@ -38,7 +35,7 @@ if __name__ == "__main__":
             file1.close()
         os.system('chmod +x '+os.environ['SCAR_INPUT_DIR']+"/script.sh")
     elif(os.environ['MODE']=="FINISH"):
-        s3.uploadDirectory("/tmp", os.environ['BUCKET'])
+        s3.uploadDirectory("/tmp/output", os.environ['BUCKET'])
         
 
 
