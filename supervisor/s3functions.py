@@ -3,18 +3,24 @@ import boto3
 import botocore
 from botocore.exceptions import ClientError
 import os
+import errno
 class S3():
     def __init__(self):
         self.client = boto3.client('s3')
     
     def download_bucket(self,bucket):
-
         s3 = boto3.resource('s3')
         my_bucket = s3.Bucket(bucket)
         for object in my_bucket.objects.all():
             print "Object : "+str(object)
             print "key : "+str(object.key)
             print "DORIAN :"+str(os.path.join("/tmp/input", object.key))
+            if not os.path.exists(os.path.dirname(str(os.path.join("/tmp/input", object.key)))):
+                try:
+                    os.makedirs(os.path.dirname(str(os.path.join("/tmp/input", object.key))))
+                except OSError as exc:
+                    if exc.errno != errno.EEXIST:
+                        raise
             my_bucket.download_file(object.key, os.path.join("/tmp/input", object.key))
         print os.listdir('/tmp/input')
 
