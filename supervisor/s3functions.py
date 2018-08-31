@@ -22,10 +22,12 @@ class S3():
                 except OSError as exc:
                     if exc.errno != errno.EEXIST:
                         raise
-            my_bucket.download_file(object.key, os.path.join(os.environ['SCAR_INPUT_DIR'], object.key))
+            self.download_file(bucket, object.key, os.path.join(os.environ['SCAR_INPUT_DIR'], object.key))
+            #my_bucket.download_file(object.key, os.path.join(os.environ['SCAR_INPUT_DIR'], object.key))
+
         print os.listdir(os.environ['SCAR_INPUT_DIR'])
 
-    def download_file(self,bucket,namefile):
+    def download_file(self,bucket,namefile,direccion):
         try:
             self.client.download_file(bucket, namefile,os.environ['SCAR_INPUT_DIR']+"/"+namefile)
             return namefile
@@ -55,7 +57,6 @@ class S3():
 if __name__ == "__main__":
 
     s3 = S3()
-    """
     if(os.environ['MODE']=="INIT"):
         with open(os.path.join(os.environ['SCAR_INPUT_DIR'],"script.sh"), "w") as file1:
             file1.write(os.environ['SCRIPT'])
@@ -67,8 +68,7 @@ if __name__ == "__main__":
     elif(os.environ['MODE']=="FINISH"):
         if (os.environ['BUCKET_OUTPUT']!=""):
             s3.uploadDirectory("/tmp/output", os.environ['BUCKET_OUTPUT'])"""
-    s3._mkdir_recursive("/tmp/input/aqui/esta")
-    print os.listdir(os.environ['SCAR_INPUT_DIR'])
+    
     
 
         
