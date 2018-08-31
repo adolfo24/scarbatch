@@ -6,6 +6,14 @@ import os
 class S3():
     def __init__(self):
         self.client = boto3.client('s3')
+    
+    def download_bucket(self,bucket):
+        my_bucket = self.client.Bucket(bucket)
+        for object in my_bucket.objects.all():
+            print str(os.path.join(os.curdir, object.key))
+            my_bucket.download_file(object.key, "/tmp/imput"+os.path.join(os.curdir, object.key))
+        print os.listdir('/tmp/imput')
+
     def download_file(self,bucket,namefile):
         try:
             self.client.download_file(bucket, namefile,os.environ['SCAR_INPUT_DIR']+"/"+namefile)
@@ -34,6 +42,9 @@ if __name__ == "__main__":
             file1.write(os.environ['SCRIPT'])
             file1.close()
         os.system('chmod +x '+os.environ['SCAR_INPUT_DIR']+"/script.sh")
+        print str(os.environ['BUCKET_INPUT'])
+        if (os.environ['BUCKET_INPUT']):
+            s3.download_bucket(os.environ['BUCKET_INPUT'])
     elif(os.environ['MODE']=="FINISH"):
         s3.uploadDirectory("/tmp/output", os.environ['BUCKET'])
         
