@@ -12,9 +12,9 @@ class S3():
         s3 = boto3.resource('s3')
         my_bucket = s3.Bucket(bucket)
         for object in my_bucket.objects.all():
-            print str(os.path.join(os.curdir, object.key))
-            my_bucket.download_file(object.key, "/tmp/imput"+os.path.join(os.curdir, object.key))
-        print os.listdir('/tmp/imput')
+            print "DORIAN :"+str(os.path.join(os.curdir, object.key))
+            my_bucket.download_file(object.key, "/tmp/input"+os.path.join(os.curdir, object.key))
+        print os.listdir('/tmp/input')
 
     def download_file(self,bucket,namefile):
         try:
