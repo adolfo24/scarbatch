@@ -42,11 +42,13 @@ if __name__ == "__main__":
             file1.write(os.environ['SCRIPT'])
             file1.close()
         os.system('chmod +x '+os.environ['SCAR_INPUT_DIR']+"/script.sh")
-        print str(os.environ['BUCKET_INPUT'])
-        if (os.environ['BUCKET_INPUT']):
+        print 'BUCKET_INPUT: '+str(os.environ['BUCKET_INPUT'])
+        if (os.environ['BUCKET_INPUT']!=""):
             s3.download_bucket(os.environ['BUCKET_INPUT'])
     elif(os.environ['MODE']=="FINISH"):
-        s3.uploadDirectory("/tmp/output", os.environ['BUCKET'])
+        if (os.environ['BUCKET_OUTPUT']!=""):
+            s3.uploadDirectory("/tmp/output", os.environ['BUCKET_OUTPUT'])
+        
         
 
 
