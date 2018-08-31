@@ -22,7 +22,9 @@ class S3():
                 except OSError as exc:
                     if exc.errno != errno.EEXIST:
                         raise
-            self.download_file(bucket, object.key, os.path.join(os.environ['SCAR_INPUT_DIR'], object.key))
+            with open(os.path.join(os.environ['SCAR_INPUT_DIR'], object.key), 'wb') as data:
+                self.client.download_fileobj(bucket, object.key, data)
+            #self.download_file(bucket, object.key, os.path.join(os.environ['SCAR_INPUT_DIR'], object.key))
             #my_bucket.download_file(object.key, os.path.join(os.environ['SCAR_INPUT_DIR'], object.key))
 
         print os.listdir(os.environ['SCAR_INPUT_DIR'])
