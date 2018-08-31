@@ -18,7 +18,7 @@ class S3():
             print "path : "+path
             if not os.path.exists(path):
                 try:
-                    os.makedirs(path)
+                    self._mkdir_recursive(path)
                 except OSError as exc:
                     if exc.errno != errno.EEXIST:
                         raise
@@ -44,6 +44,12 @@ class S3():
             print error_msg, error_msg + ": %s" % ce
             raise ce
         
+    def _mkdir_recursive(self, path):
+        sub_path = os.path.dirname(path)
+        if not os.path.exists(sub_path):
+            self._mkdir_recursive(sub_path)
+        if not os.path.exists(path):
+            os.mkdir(path)
 
 
 if __name__ == "__main__":
@@ -60,7 +66,8 @@ if __name__ == "__main__":
     elif(os.environ['MODE']=="FINISH"):
         if (os.environ['BUCKET_OUTPUT']!=""):
             s3.uploadDirectory("/tmp/output", os.environ['BUCKET_OUTPUT'])
- 
+    
+
         
         
 
