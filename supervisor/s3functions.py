@@ -14,7 +14,7 @@ class S3():
             error_msg = "Error register job definition."
             print error_msg, error_msg + ": %s" % ce
             raise ce
-    def uploadDirectory(path,bucketname):
+    def uploadDirectory(self,path,bucketname):
         for root,dirs,files in os.walk(path):
             for file in files:
                 self.client.upload_file(os.path.join(root,file),bucketname,file)
@@ -28,8 +28,8 @@ if __name__ == "__main__":
             file1.close()
         os.system('chmod +x '+os.environ['SCAR_INPUT_DIR']+"/script.sh")
     elif(os.environ['MODE']=="FINISH"):
-        s3.uploadDirectory("/tmp",os.environ['BUCKET'])
-
+        s3.uploadDirectory("/tmp", os.environ['BUCKET'])
+        
 
 
 
