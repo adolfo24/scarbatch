@@ -8,7 +8,9 @@ class S3():
         self.client = boto3.client('s3')
     
     def download_bucket(self,bucket):
-        my_bucket = self.client.Bucket(bucket)
+
+        s3 = boto3.resource('s3')
+        my_bucket = s3.Bucket(bucket)
         for object in my_bucket.objects.all():
             print str(os.path.join(os.curdir, object.key))
             my_bucket.download_file(object.key, "/tmp/imput"+os.path.join(os.curdir, object.key))
