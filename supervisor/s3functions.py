@@ -12,7 +12,8 @@ class S3():
         s3 = boto3.resource('s3')
         my_bucket = s3.Bucket(bucket)
         for object in my_bucket.objects.all():
-            print "Dorian : "+str(object.key)
+            print "Object : "+str(object)
+            print "key : "+str(object.key)
             print "DORIAN :"+str(os.path.join("/tmp/input", object.key))
             my_bucket.download_file(object.key, os.path.join("/tmp/input", object.key))
         print os.listdir('/tmp/input')
