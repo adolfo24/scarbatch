@@ -55,7 +55,6 @@ class S3():
 
 
 if __name__ == "__main__":
-
     s3 = S3()
     if(os.environ['MODE']=="INIT"):
         with open(os.path.join(os.environ['SCAR_INPUT_DIR'],"script.sh"), "w") as file1:
@@ -67,14 +66,4 @@ if __name__ == "__main__":
             s3.download_bucket(os.environ['BUCKET_INPUT'])
     elif(os.environ['MODE']=="FINISH"):
         if (os.environ['BUCKET_OUTPUT']!=""):
-            s3.uploadDirectory("/tmp/output", os.environ['BUCKET_OUTPUT'])"""
-    
-    
-
-        
-        
-
-
-
-
-
+            s3.uploadDirectory("/tmp/output", os.environ['BUCKET_OUTPUT'])
