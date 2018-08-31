@@ -14,10 +14,11 @@ class S3():
         for object in my_bucket.objects.all():
             print "Object : "+str(object)
             print "key : "+str(object.key)
-            print "DORIAN :"+str(os.path.join("/tmp/input", object.key))
-            if not os.path.exists(os.path.dirname(str(os.path.join("/tmp/input", object.key)))):
+            path= os.path.dirname(os.path.join("/tmp/input", object.key))
+            print "path : "+path
+            if not os.path.exists(path):
                 try:
-                    os.makedirs(os.path.dirname(str(os.path.join("/tmp/input", object.key))))
+                    os.makedirs(path)
                 except OSError as exc:
                     if exc.errno != errno.EEXIST:
                         raise
@@ -46,6 +47,7 @@ class S3():
 
 
 if __name__ == "__main__":
+
     s3 = S3()
     if(os.environ['MODE']=="INIT"):
         with open(os.path.join(os.environ['SCAR_INPUT_DIR'],"script.sh"), "w") as file1:
@@ -58,6 +60,7 @@ if __name__ == "__main__":
     elif(os.environ['MODE']=="FINISH"):
         if (os.environ['BUCKET_OUTPUT']!=""):
             s3.uploadDirectory("/tmp/output", os.environ['BUCKET_OUTPUT'])
+ 
         
         
 
