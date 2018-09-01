@@ -25,7 +25,7 @@ class S3():
             head, tail = os.path.split(os.path.join(os.environ['SCAR_INPUT_DIR'], object.key))
             if tail:
                 with open(os.path.join(os.environ['SCAR_INPUT_DIR'], object.key), 'wb') as data:
-                self.client.download_fileobj(bucket, object.key, data)     
+                    self.client.download_fileobj(bucket, object.key, data)     
 
         print os.listdir(os.environ['SCAR_INPUT_DIR'])
 
