@@ -22,10 +22,10 @@ class S3():
                 except OSError as exc:
                     if exc.errno != errno.EEXIST:
                         raise
-            with open(os.path.join(os.environ['SCAR_INPUT_DIR'], object.key), 'wb') as data:
-                self.client.download_fileobj(bucket, object.key, data)
-            #self.download_file(bucket, object.key, os.path.join(os.environ['SCAR_INPUT_DIR'], object.key))
-            #my_bucket.download_file(object.key, os.path.join(os.environ['SCAR_INPUT_DIR'], object.key))
+            head, tail = os.path.split(os.path.join(os.environ['SCAR_INPUT_DIR'], object.key))
+            if tail:
+                with open(os.path.join(os.environ['SCAR_INPUT_DIR'], object.key), 'wb') as data:
+                self.client.download_fileobj(bucket, object.key, data)     
 
         print os.listdir(os.environ['SCAR_INPUT_DIR'])
 
@@ -69,3 +69,21 @@ if __name__ == "__main__":
     elif(os.environ['MODE']=="FINISH"):
         if (os.environ['BUCKET_OUTPUT']!=""):
             s3.uploadDirectory("/tmp/output", os.environ['BUCKET_OUTPUT'])
+    """
+    fname="/tmp/input/"
+    head, tail = os.path.split(fname)
+    if tail:
+        print "tail "+str(tail)
+    else:
+        print "No tail"
+    print "termina en . "+str(fname.endswith(".*"))
+    print str(os.path.isfile(fname))
+    fname="/tmp/input/como/estas/hola.tar.gz"
+    head, tail = os.path.split(fname)    
+    if tail:
+        print "tail "+str(tail)
+    else:
+        print "No tail"
+    print "termina en . "+str(fname.endswith(".*"))
+    print str(os.path.isfile(fname))
+    """
