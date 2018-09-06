@@ -56,8 +56,16 @@ class S3():
             os.mkdir(path)
 
 
+def is_variable_in_environment(variable):
+    return check_key_in_dictionary(variable, os.environ)
+
+def check_key_in_dictionary(key, dictionary):
+    return (key in dictionary) and dictionary[key] and dictionary[key] != ""
+
+
 if __name__ == "__main__":
     s3 = S3()
+    bucket = os.environ['NAME_FUNCT']
     if(os.environ['MODE']=="INIT"):
         with open(os.path.join(os.environ['SCAR_INPUT_DIR'],"script.sh"), "w") as file1:
             file1.write(os.environ['SCRIPT'])
@@ -67,23 +75,6 @@ if __name__ == "__main__":
         if (os.environ['BUCKET_INPUT']!=""):
             s3.download_bucket(os.environ['BUCKET_INPUT'])
     elif(os.environ['MODE']=="FINISH"):
-        if (os.environ['BUCKET_OUTPUT']!=""):
-            s3.uploadDirectory("/tmp/output", os.environ['BUCKET_OUTPUT'])
-    """
-    fname="/tmp/input/"
-    head, tail = os.path.split(fname)
-    if tail:
-        print "tail "+str(tail)
-    else:
-        print "No tail"
-    print "termina en . "+str(fname.endswith(".*"))
-    print str(os.path.isfile(fname))
-    fname="/tmp/input/como/estas/hola.tar.gz"
-    head, tail = os.path.split(fname)    
-    if tail:
-        print "tail "+str(tail)
-    else:
-        print "No tail"
-    print "termina en . "+str(fname.endswith(".*"))
-    print str(os.path.isfile(fname))
-    """
+        if is_variable_in_environment('BUCKET_OUTPUT'):
+            bucket = os.environ['BUCKET_OUTPUT']
+        s3.uploadDirectory("/tmp/output", bucket)
