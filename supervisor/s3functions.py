@@ -72,8 +72,9 @@ if __name__ == "__main__":
             file1.close()
         os.system('chmod +x '+os.environ['SCAR_INPUT_DIR']+"/script.sh")
         print 'BUCKET_INPUT: '+str(os.environ['BUCKET_INPUT'])
-        if (os.environ['BUCKET_INPUT']!=""):
-            s3.download_bucket(os.environ['BUCKET_INPUT'])
+        if is_variable_in_environment('BUCKET_INPUT'):
+            if (os.environ['BUCKET_INPUT']!="NO"):
+                s3.download_bucket(os.environ['BUCKET_INPUT'])
     elif(os.environ['MODE']=="FINISH"):
         if is_variable_in_environment('BUCKET_OUTPUT'):
             bucket = os.environ['BUCKET_OUTPUT']
