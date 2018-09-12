@@ -42,7 +42,7 @@ class S3():
         try:
             for root,dirs,files in os.walk(path):
                 for file in files:
-                    key= "/"+bucketname+"/"+bucketname+"/output/"+file
+                    key= "output/"+file
                     print key
                     self.client.put_object(Bucket=bucketname,Key=key,Body=file)
         except ClientError as ce:
