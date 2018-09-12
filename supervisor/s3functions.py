@@ -24,7 +24,7 @@ class S3():
                         raise
             head, tail = os.path.split(os.path.join(os.environ['SCAR_INPUT_DIR'], object.key))
             if tail:
-                with open(os.path.join(os.environ['SCAR_INPUT_DIR'], object.key), 'wb') as data:
+                with open(os.path.join(os.environ['SCAR_INPUT_DIR'], tail), 'wb') as data:
                     self.client.download_fileobj(bucket, object.key, data)     
 
         print os.listdir(os.environ['SCAR_INPUT_DIR'])
@@ -75,8 +75,8 @@ if __name__ == "__main__":
         print 'BUCKET_INPUT: '+str(os.environ['BUCKET_INPUT'])
         if is_variable_in_environment('BUCKET_INPUT'):
             if (os.environ['BUCKET_INPUT']!="NO"):
-                #s3.download_bucket(os.environ['BUCKET_INPUT'])
-                s3.download_file(bucket)
+                s3.download_bucket(os.environ['BUCKET_INPUT'])
+                #s3.download_file(bucket)
     elif(os.environ['MODE']=="FINISH"):
         if is_variable_in_environment('BUCKET_OUTPUT'):
             bucket = os.environ['BUCKET_OUTPUT']
