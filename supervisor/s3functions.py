@@ -79,5 +79,6 @@ if __name__ == "__main__":
                 s3.download_bucket(os.environ['BUCKET_INPUT'])
     elif(os.environ['MODE']=="FINISH"):
         if is_variable_in_environment('BUCKET_OUTPUT'):
-            bucket = os.environ['BUCKET_OUTPUT']
+            if (os.environ['BUCKET_OUTPUT']!="NO"):
+                bucket = os.environ['BUCKET_OUTPUT']
         s3.uploadDirectory(os.environ['SCAR_OUTPUT_DIR'], bucket)
