@@ -42,7 +42,8 @@ class S3():
         try:
             for root,dirs,files in os.walk(path):
                 for file in files:
-                    key= bucketname+"/output/"+file
+                    key= "/"+bucketname+"/"+bucketname+"/output/"+file
+                    print key
                     self.client.put_object(Bucket=bucketname,Key=key,Body=file)
         except ClientError as ce:
             error_msg = "Error upload file to S3."
@@ -76,7 +77,6 @@ if __name__ == "__main__":
         if is_variable_in_environment('BUCKET_INPUT'):
             if (os.environ['BUCKET_INPUT']!="NO"):
                 s3.download_bucket(os.environ['BUCKET_INPUT'])
-                #s3.download_file(bucket)
     elif(os.environ['MODE']=="FINISH"):
         if is_variable_in_environment('BUCKET_OUTPUT'):
             bucket = os.environ['BUCKET_OUTPUT']
