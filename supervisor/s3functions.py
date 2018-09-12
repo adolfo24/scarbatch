@@ -29,10 +29,11 @@ class S3():
 
         print os.listdir(os.environ['SCAR_INPUT_DIR'])
 
-    def download_file(self,bucket,namefile,direccion):
+    def download_file(self,bucket):
         try:
-            self.client.download_file(bucket, namefile,os.environ['SCAR_INPUT_DIR']+"/"+namefile)
-            return namefile
+            head, tail = os.path.split(os.environ['SCAR_INPUT_FILE'])
+            self.client.download_file(bucket, tail,os.environ['SCAR_INPUT_DIR']+"/"+tail)
+            return tail
         except ClientError as ce:
             error_msg = "Error download file to S3."
             print error_msg, error_msg + ": %s" % ce
@@ -74,7 +75,8 @@ if __name__ == "__main__":
         print 'BUCKET_INPUT: '+str(os.environ['BUCKET_INPUT'])
         if is_variable_in_environment('BUCKET_INPUT'):
             if (os.environ['BUCKET_INPUT']!="NO"):
-                s3.download_bucket(os.environ['BUCKET_INPUT'])
+                #s3.download_bucket(os.environ['BUCKET_INPUT'])
+                s3.download_file(bucket)
     elif(os.environ['MODE']=="FINISH"):
         if is_variable_in_environment('BUCKET_OUTPUT'):
             bucket = os.environ['BUCKET_OUTPUT']
