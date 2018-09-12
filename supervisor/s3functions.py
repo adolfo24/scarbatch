@@ -41,7 +41,7 @@ class S3():
         try:
             for root,dirs,files in os.walk(path):
                 for file in files:
-                    key= "/tmp/"+os.environ['REQUEST_ID']+"/output/"+file
+                    key= bucketname+"/output/"+file
                     self.client.put_object(Bucket=bucketname,Key=key,Body=file)
         except ClientError as ce:
             error_msg = "Error upload file to S3."
@@ -78,4 +78,4 @@ if __name__ == "__main__":
     elif(os.environ['MODE']=="FINISH"):
         if is_variable_in_environment('BUCKET_OUTPUT'):
             bucket = os.environ['BUCKET_OUTPUT']
-        s3.uploadDirectory("/tmp/output", bucket)
+        s3.uploadDirectory(os.environ['SCAR_OUTPUT_DIR'], bucket)
